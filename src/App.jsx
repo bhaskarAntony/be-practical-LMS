@@ -21,6 +21,7 @@ import JobDetails from './pages/JobDetials';
 import AffiliateDashboard from './pages/AffiliateDashboard';
 import PurchaseHistory from './pages/PurchaseHistory';
 import Leaderboard from './pages/Leaderboard';
+import BlogsPage from './pages/BlogsPage';
 
 function App() {
   localStorage.setItem("user", JSON.stringify({
@@ -54,6 +55,7 @@ function App() {
               <Route path="/affliate" element={<AffiliateDashboard />} />
               <Route path="/history" element={<PurchaseHistory />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/blogs" element={<BlogsPage />} />
             </Routes>
           </main>
         </div>
