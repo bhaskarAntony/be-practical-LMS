@@ -80,6 +80,16 @@ You may assume that each input would have exactly one solution, and you may not 
         input: [2, 7, 11, 15],
         target: 9,
         expected: [0, 1]
+      },
+      {
+        input: [3, 2, 4],
+        target: 6,
+        expected: [1, 2]
+      },
+      {
+        input: [3, 3],
+        target: 6,
+        expected: [0, 1]
       }
     ],
     hints: [
@@ -98,9 +108,207 @@ You may assume that each input would have exactly one solution, and you may not 
   }
   return [];
 }`
+  },
+  {
+    id: "2",
+    title: "Longest Substring Without Repeating Characters",
+    difficulty: "Medium",
+    acceptance: "30%",
+    category: "Strings",
+    description: `Given a string s, find the length of the longest substring without repeating characters.`,
+    examples: [
+      {
+        input: "abcabcbb",
+        output: "3",
+        explanation: "The answer is 'abc', with the length of 3."
+      }
+    ],
+    testCases: [
+      {
+        input: 'abcabcbb',
+        target: 3,
+        expected: 3
+      },
+      {
+        input: 'bbbbb',
+        target: 1,
+        expected: 1
+      },
+      {
+        input: 'pwwkew',
+        target: 3,
+        expected: 3
+      }
+    ],
+    hints: [
+      "Use a sliding window approach to track the characters."
+    ],
+    companies: ["Apple", "Microsoft", "Uber"],
+    solution: `function lengthOfLongestSubstring(s) {
+  let set = new Set();
+  let left = 0;
+  let result = 0;
+  
+  for (let right = 0; right < s.length; right++) {
+    while (set.has(s[right])) {
+      set.delete(s[left]);
+      left++;
+    }
+    set.add(s[right]);
+    result = Math.max(result, right - left + 1);
   }
-  // Add 9 more problems with similar structure
+  return result;
+}`
+  },
+  {
+    id: "3",
+    title: "Median of Two Sorted Arrays",
+    difficulty: "Hard",
+    acceptance: "30%",
+    category: "Arrays",
+    description: `Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.`,
+    examples: [
+      {
+        input: "nums1 = [1, 3], nums2 = [2]",
+        output: "2.0",
+        explanation: "The median is 2.0."
+      }
+    ],
+    testCases: [
+      {
+        input: [1, 3],
+        target: [2],
+        expected: 2.0
+      },
+      {
+        input: [1, 2],
+        target: [3, 4],
+        expected: 2.5
+      },
+      {
+        input: [0, 0],
+        target: [0, 0],
+        expected: 0.0
+      }
+    ],
+    hints: [
+      "Think about dividing the arrays into left and right parts."
+    ],
+    companies: ["Amazon", "Microsoft", "Facebook"],
+    solution: `function findMedianSortedArrays(nums1, nums2) {
+  let merged = [...nums1, ...nums2].sort((a, b) => a - b);
+  let n = merged.length;
+  if (n % 2 === 0) {
+    return (merged[n / 2 - 1] + merged[n / 2]) / 2;
+  } else {
+    return merged[Math.floor(n / 2)];
+  }
+}`
+  },
+  {
+    id: "4",
+    title: "Search in Rotated Sorted Array",
+    difficulty: "Medium",
+    acceptance: "40%",
+    category: "Binary Search",
+    description: `Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]. Given the array nums after the rotation and an integer target, return the index of target if it is in nums, or -1 if it is not.`,
+    examples: [
+      {
+        input: "nums = [4,5,6,7,0,1,2], target = 0",
+        output: "4",
+        explanation: "The target 0 is at index 4."
+      }
+    ],
+    testCases: [
+      {
+        input: [4, 5, 6, 7, 0, 1, 2],
+        target: 0,
+        expected: 4
+      },
+      {
+        input: [4, 5, 6, 7, 0, 1, 2],
+        target: 3,
+        expected: -1
+      },
+      {
+        input: [1, 3],
+        target: 3,
+        expected: 1
+      }
+    ],
+    hints: [
+      "Try using binary search to find the rotation point."
+    ],
+    companies: ["Amazon", "Microsoft", "Adobe"],
+    solution: `function search(nums, target) {
+  let left = 0;
+  let right = nums.length - 1;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (nums[mid] === target) return mid;
+    if (nums[left] <= nums[mid]) {
+      if (nums[left] <= target && target < nums[mid]) right = mid - 1;
+      else left = mid + 1;
+    } else {
+      if (nums[mid] < target && target <= nums[right]) left = mid + 1;
+      else right = mid - 1;
+    }
+  }
+  return -1;
+}`
+  },
+  {
+    id: "5",
+    title: "Maximal Square",
+    difficulty: "Medium",
+    acceptance: "40%",
+    category: "Dynamic Programming",
+    description: `Given a 2D binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.`,
+    examples: [
+      {
+        input: "matrix = [['1','0','1','0','0'],['1','0','1','1','1'],['1','1','1','1','1'],['1','0','0','1','0']]",
+        output: "4",
+        explanation: "The largest square has a side length of 2, so the area is 4."
+      }
+    ],
+    testCases: [
+      {
+        input: [['1','0','1','0','0'],['1','0','1','1','1'],['1','1','1','1','1'],['1','0','0','1','0']],
+        expected: 4
+      },
+      {
+        input: [['1','1','1','1'],['1','1','1','1'],['1','1','1','1']],
+        expected: 9
+      },
+      {
+        input: [['0','0','0'],['0','0','0'],['0','0','0']],
+        expected: 0
+      }
+    ],
+    hints: [
+      "Use dynamic programming to keep track of the side length of the square."
+    ],
+    companies: ["Amazon", "Facebook", "Microsoft"],
+    solution: `function maximalSquare(matrix) {
+  if (matrix.length === 0) return 0;
+
+  let dp = Array(matrix.length).fill(0).map(() => Array(matrix[0].length).fill(0));
+  let maxSide = 0;
+
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[0].length; j++) {
+      if (matrix[i][j] === '1') {
+        dp[i][j] = Math.min(dp[i - 1]?.[j - 1] || 0, dp[i - 1]?.[j] || 0, dp[i][j - 1] || 0) + 1;
+        maxSide = Math.max(maxSide, dp[i][j]);
+      }
+    }
+  }
+  return maxSide * maxSide;
+}`
+  },
 ];
+
 
 export const liveEvents = [
   {

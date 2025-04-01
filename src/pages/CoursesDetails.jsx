@@ -107,7 +107,8 @@ function CourseDetail() {
   const renderContent = (item, details) => {
     if (!details) return <p>Loading content... Click an item to view details.</p>;
     if (details.error) return <p className="text-red-600">{details.error}</p>;
-
+    
+    
     switch (item.type) {
       case 'Quiz':
         return (
@@ -150,7 +151,7 @@ function CourseDetail() {
         return (
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Type: Live Event</h2>
-            <h3 className="text-xl font-semibold">{details.title}</h3>
+            <h3 className="text-xl font-semibold">{details.courseItemData.title}</h3>
             <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: details.htmlDescription || 'No description available' }} />
             <div>
               <p><strong>Created At:</strong> {new Date(details.createdAt).toLocaleString()}</p>
@@ -183,13 +184,14 @@ function CourseDetail() {
         );
 
       case 'Video':
+        
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Type: Video</h2>
+            <h2 className="text-2xl font-bold">Type: {details.type}</h2>
             <h3 className="text-xl font-semibold">{details.title}</h3>
             <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: details.htmlDescription || 'No description available' }} />
             <div>
-              <p><strong>Created At:</strong> {new Date(details.createdAt).toLocaleString()}</p>
+              <p><strong>Created At:</strong> hello {new Date(details.createdAt).toLocaleString()}ee</p>
               <p><strong>Updated At:</strong> {new Date(details.updatedAt).toLocaleString()}</p>
               {details.videoData && (
                 <>
@@ -223,6 +225,8 @@ function CourseDetail() {
     }
   };
 
+
+  
   if (loading) return <div className="p-6">Loading course details...</div>;
   if (error) return <div className="p-6 text-red-600">{error}</div>;
   if (!courseItems.length) return <div className="p-6">No course items found</div>;
@@ -238,25 +242,42 @@ function CourseDetail() {
   return (
     <div className="p-6 flex gap-6">
       {/* Sidebar */}
-      <div className="w-1/4 bg-white rounded-lg shadow-sm p-4">
-        <h2 className="text-xl font-bold mb-4">Course Content</h2>
-        {Object.entries(itemsByWeek).map(([week, weekItems]) => (
-          <div key={week} className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">{week}</h3>
-            <ul className="space-y-2 mt-2">
-              {weekItems.map((item, index) => (
-                <li
-                  key={item.courseItemId}
-                  className={`p-2 rounded cursor-pointer ${selectedItem?.courseItemId === item.courseItemId ? 'bg-blue-100' : ''}`}
-                  onClick={() => handleItemClick(item)}
-                >
-                  {index + 1}. {item.type}: {getItemTitle(item)}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+      <div className="w-1/3 bg-white rounded-lg shadow-sm p-4">
+  <h2 className="text-xl font-bold mb-4">Course Content</h2>
+
+  {Object.entries(itemsByWeek).map(([week, weekItems]) => (
+    <div key={week} className="mb-6">
+      <h3 className="text-lg font-semibold mb-2">{week}</h3>
+      {weekItems.map((item, index) => (
+        <div key={item.courseItemId} className="mb-4">
+          {/* Display sectionName once at the beginning */}
+          {index === 0 && (
+            <div className="bg-indigo-600 text-sm text-white p-2 rounded-lg mb-4">
+              {item.sectionName}
+            </div>
+          )}
+          <ul className="space-y-2 mt-2">
+            <li
+              key={item.courseItemId}
+              className={`p-4 rounded cursor-pointer transition-all hover:bg-blue-200 ${selectedItem?.courseItemId === item.courseItemId ? 'bg-blue-100 border-l-4 border-blue-500' : 'border-l-4 border-transparent'}`}
+              onClick={() => handleItemClick(item)}
+            >
+              <div className="flex justify-between items-center">
+                <span className="font-semibold">{index + 1}. {item.videoTitle}</span>
+               
+              </div>
+              <span className="text-sm text-gray-500"></span>
+              <div className="mt-1 text-sm text-gray-600">
+                <span className='text-indigo-600'>{(item.videoDurationInSeconds / 60).toFixed(0)} Min | {item.type}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
 
       {/* Main Content */}
       <div className="w-3/4 bg-white rounded-lg shadow-sm p-6">
