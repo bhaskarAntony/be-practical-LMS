@@ -12,6 +12,7 @@ function Sidebar() {
     { icon: User, label: 'Discussion Hubs', path: 'https://learning.be-practical.com/community' },
     { icon: Video, label: 'Live Events', path: '/live-events' },
     { icon: Flask, label: 'Labs', path: '/labs' },
+    { icon: User, label: 'Leaderboard', path: '/leaderboard' },
     { icon: Trophy, label: 'Gamification', path: '/gamification' },
     { icon: BookOpen, label: 'Affiliate Dashboard', path: '/affliate' },
     { icon: BookCheck, label: 'Quiz', path: '/quiz' },
